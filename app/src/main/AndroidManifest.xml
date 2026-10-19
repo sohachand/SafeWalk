@@ -50,6 +50,7 @@
             android:theme="@style/Theme.Project" />
         <activity android:name=".safety.AlertSentActivity" android:exported="false" />
         <activity android:name=".safety.ManualSosActivity" android:exported="false" />
+        <activity android:name=".safety.EmergencyHelpActivity" android:exported="false" />
 
         <!-- Trusted circle management -->
         <activity android:name=".trustedcircle.TrustedCircleListActivity" android:exported="false" />

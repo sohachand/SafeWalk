@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@color/surface_dark"
+            android:background="@drawable/bg_input"
             android:hint="6-digit code"
             android:inputType="number"
             android:maxLength="6"

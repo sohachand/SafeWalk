@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:autofillHints="emailAddress"
-            android:background="@color/surface_dark"
+            android:background="@drawable/bg_input"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="14dp"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:autofillHints="password"
-            android:background="@color/surface_dark"
+            android:background="@drawable/bg_input"
             android:hint="Password (min 6 characters)"
             android:inputType="textPassword"
             android:padding="14dp"
@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
-            android:background="@color/surface_dark"
+            android:background="@drawable/bg_input"
             android:text="Continue without an account"
             android:textColor="@color/text_on_dark" />
 

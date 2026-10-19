@@ -1,6 +1,8 @@
 package com.example.project.home;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -21,6 +24,9 @@ import com.example.project.data.WalkRecord;
 import com.example.project.history.WalkDetailActivity;
 import com.example.project.history.WalkHistoryActivity;
 import com.example.project.profile.ProfileActivity;
+import com.example.project.safety.EmergencyHelpActivity;
+import com.example.project.safety.FakeCallActivity;
+import com.example.project.safety.SirenStrobe;
 import com.example.project.settings.GeneralSettingsActivity;
 import com.example.project.trustedcircle.TrustedCircleListActivity;
 import com.example.project.walk.StartWalkSetupActivity;
@@ -57,6 +63,26 @@ public class HomeDashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(this, com.example.project.walk.FollowWalkActivity.class)));
         findViewById(R.id.settingsLink).setOnClickListener(v ->
                 startActivity(new Intent(this, GeneralSettingsActivity.class)));
+        findViewById(R.id.emergencyLink).setOnClickListener(v ->
+                startActivity(new Intent(this, EmergencyHelpActivity.class)));
+        findViewById(R.id.fakeCallLink).setOnClickListener(v ->
+                startActivity(new Intent(this, FakeCallActivity.class)));
+        findViewById(R.id.historyLink).setOnClickListener(v ->
+                startActivity(new Intent(this, WalkHistoryActivity.class)));
+        findViewById(R.id.nearbyHelpLink).setOnClickListener(v -> showNearbyHelp());
+        TextView sirenLabel = findViewById(R.id.sirenLabel);
+        findViewById(R.id.sirenLink).setOnClickListener(v -> {
+            if (SirenStrobe.isRunning()) {
+                SirenStrobe.stop();
+                sirenLabel.setText("Siren");
+            } else {
+                SirenStrobe.start(this);
+                sirenLabel.setText("Stop siren");
+            }
+        });
+        TextView avatar = findViewById(R.id.profileButton);
+        String fn = firstName(session.getName());
+        avatar.setText(fn.substring(0, 1).toUpperCase(Locale.getDefault()));
     }
 
     @Override
@@ -68,44 +94,62 @@ public class HomeDashboardActivity extends AppCompatActivity {
         });
     }
 
-    /** Aggregate stats from the stored walk history. */
+    /** Opens Google Maps (or the browser) searching for the chosen kind of place near the user. */
+    private void showNearbyHelp() {
+        final String[] labels = {"Police station", "Hospital", "Pharmacy", "Petrol pump (open late)"};
+        final String[] queries = {"police station", "hospital", "pharmacy", "petrol pump"};
+        new AlertDialog.Builder(this)
+                .setTitle("Find nearby help")
+                .setItems(labels, (d, which) -> {
+                    Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query="
+                            + Uri.encode(queries[which] + " near me"));
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                })
+                .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SirenStrobe.stop();
+    }
+
+    /** Aggregate stats from the stored walk history, shown next to the safety ring. */
     private void renderInsights(List<WalkRecord> walks) {
         TextView insights = findViewById(R.id.insightsText);
+        com.example.project.home.ScoreRingView ring = findViewById(R.id.scoreRing);
         if (walks.isEmpty()) {
-            insights.setText("Your safety insights will appear after your first walk.");
+            ring.setScore(-1);
+            insights.setText("Your safety score appears after your first walk.");
             return;
         }
         double sumPeak = 0;
         int high = 0;
         long totalMin = 0;
-        int[] byHour = new int[24];
         int[] highByHour = new int[24];
         for (WalkRecord w : walks) {
             sumPeak += w.peakRisk;
             totalMin += w.durationMinutes();
-            java.util.Calendar c = java.util.Calendar.getInstance();
-            c.setTimeInMillis(w.startTimeMillis);
-            int h = c.get(java.util.Calendar.HOUR_OF_DAY);
-            byHour[h]++;
             if ("HIGH".equals(w.finalTier)) {
                 high++;
-                highByHour[h]++;
+                java.util.Calendar c = java.util.Calendar.getInstance();
+                c.setTimeInMillis(w.startTimeMillis);
+                highByHour[c.get(java.util.Calendar.HOUR_OF_DAY)]++;
             }
         }
         double avg = sumPeak / walks.size();
         int score = (int) Math.max(0, Math.min(100, Math.round(100 - avg)));
+        ring.setScore(score);
         int riskyHour = -1;
         for (int h = 0; h < 24; h++) {
             if (highByHour[h] > 0 && (riskyHour < 0 || highByHour[h] > highByHour[riskyHour])) riskyHour = h;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.getDefault(), "Your safety insights\nSafety score: %d/100\n", score));
-        sb.append(String.format(Locale.getDefault(), "%d walks - %d min walked - %d high-risk\n",
-                walks.size(), totalMin, high));
-        sb.append(String.format(Locale.getDefault(), "Average peak risk: %.0f/100", avg));
-        if (riskyHour >= 0) {
-            sb.append(String.format(Locale.getDefault(), "\nRiskiest time: around %02d:00", riskyHour));
-        }
+        sb.append(String.format(Locale.getDefault(), "%d walks \u00b7 %d min\n", walks.size(), totalMin));
+        sb.append(String.format(Locale.getDefault(), "%d high-risk \u00b7 avg peak %.0f\n", high, avg));
+        sb.append(riskyHour >= 0
+                ? String.format(Locale.getDefault(), "Riskiest time: around %02d:00", riskyHour)
+                : "No high-risk walks - great job!");
         insights.setText(sb.toString());
     }
 
@@ -118,7 +162,7 @@ public class HomeDashboardActivity extends AppCompatActivity {
 
         if (walks.isEmpty()) {
             TextView empty = new TextView(this);
-            empty.setText("No walks yet - start one above.");
+            empty.setText("No walks yet - tap Start a Safe Walk.");
             empty.setTextColor(ContextCompat.getColor(this, R.color.text_on_dark_secondary));
             empty.setPadding(0, 8, 0, 8);
             list.addView(empty);
@@ -162,7 +206,9 @@ public class HomeDashboardActivity extends AppCompatActivity {
                 colorRes = R.color.risk_low;
                 label = "Low Risk";
         }
-        tierView.setBackgroundColor(ContextCompat.getColor(this, colorRes));
+        tierView.setBackgroundResource(R.drawable.bg_pill);
+        androidx.core.view.ViewCompat.setBackgroundTintList(tierView,
+                ColorStateList.valueOf(ContextCompat.getColor(this, colorRes)));
         tierView.setText(label);
     }
 

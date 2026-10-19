@@ -11,6 +11,8 @@ time of night - into a 0-100 risk score, and escalates to alerts when risk is hi
 - Siren + flashlight strobe, SMS alerts with battery level and map link
 - Risk timeline chart and GPS route trail coloured by risk
 - Firebase Auth login, Firestore walk history sync, live location sharing with a "Follow a walk" screen
+- Home dashboard with safety score ring and quick actions (circle, follow, emergency, fake call, nearby help, siren)
+- One-tap Emergency screen: 112, police, ambulance, women/child helplines and your own trusted contacts
 - Works fully offline when Firebase is not configured
 
 ## Setup
