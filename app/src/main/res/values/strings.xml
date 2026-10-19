@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">SafeWalk</string>
+
+    <string name="main_title">SafeWalk</string>
+    <string name="risk_tier_not_walking">NOT WALKING</string>
+    <string name="risk_score_placeholder">Risk score: —</string>
+    <string name="risk_score_format">Risk score: %1$.1f</string>
+    <string name="start_walk">Start Walk</string>
+    <string name="stop_walk">Stop Walk</string>
+    <string name="sensitivity_label">Sensitivity</string>
+    <string name="stats_placeholder">Stationary: —   ·   Deviation: —   ·   Time: —</string>
+    <string name="stats_format">Stationary: %1$.1f min   ·   Deviation: %2$.0f m   ·   Time: %3$s</string>
+    <string name="emergency_contact_hint">Emergency contact number</string>
+    <string name="save_contact">Save</string>
+    <string name="alert_contact">Alert Emergency Contact</string>
+    <string name="contact_saved">Emergency contact saved</string>
+    <string name="enter_contact_first">Enter an emergency contact number first</string>
+    <string name="sms_body_template">SafeWalk alert: my current risk level is %1$s. Please check on me.</string>
+    <string name="high_risk_alert_title">High risk detected</string>
+    <string name="high_risk_alert_message">SafeWalk thinks your situation may be risky right now. Consider contacting someone you trust.</string>
+    <string name="location_permission_needed">SafeWalk needs location access to track your walk and estimate risk.</string>
+    <string name="emergency_contact_label">Emergency Contact</string>
+
+    <string-array name="sensitivity_levels">
+        <item>Relaxed</item>
+        <item>Standard</item>
+        <item>Cautious</item>
+    </string-array>
+</resources>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Project">
+
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Project">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Onboarding -->
+        <activity android:name=".onboarding.OnboardingActivity" android:exported="false" />
+        <activity android:name=".onboarding.SignUpLoginActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".onboarding.PermissionsSetupActivity" android:exported="false" />
+        <activity android:name=".onboarding.TrustedCircleSetupActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+
+        <!-- Core walk flow -->
+        <activity android:name=".home.HomeDashboardActivity" android:exported="false" />
+        <activity android:name=".walk.StartWalkSetupActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".walk.ActiveWalkActivity" android:exported="false" />
+        <activity android:name=".walk.FollowWalkActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+
+        <!-- Safety response -->
+        <activity
+            android:name=".safety.FakeCallActivity"
+            android:exported="false"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:theme="@style/Theme.Project" />
+        <activity android:name=".safety.AlertSentActivity" android:exported="false" />
+        <activity android:name=".safety.ManualSosActivity" android:exported="false" />
+
+        <!-- Trusted circle management -->
+        <activity android:name=".trustedcircle.TrustedCircleListActivity" android:exported="false" />
+        <activity android:name=".trustedcircle.AddEditContactActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+
+        <!-- History and review -->
+        <activity android:name=".history.WalkSummaryActivity" android:exported="false" />
+        <activity android:name=".history.WalkHistoryActivity" android:exported="false" />
+        <activity android:name=".history.WalkDetailActivity" android:exported="false" />
+
+        <!-- Settings and profile -->
+        <activity android:name=".profile.ProfileActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".settings.GeneralSettingsActivity" android:exported="false" />
+        <activity android:name=".settings.RiskSensitivityActivity" android:exported="false" />
+        <activity android:name=".settings.PermissionsManagementActivity" android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+    </application>
+
+</manifest>

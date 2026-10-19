@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="pink">#FF42C9</color>
+
+    <color name="risk_low">#2E7D32</color>
+    <color name="risk_medium">#F9A825</color>
+    <color name="risk_high">#C62828</color>
+    <color name="risk_neutral">#9E9E9E</color>
+
+    <color name="surface_light">#F5F5F7</color>
+    <color name="text_primary">#1C1B1F</color>
+    <color name="text_secondary">#6B6B70</color>
+
+    <!-- Dark theme used by onboarding / walk / safety screens, matched to the brand mock -->
+    <color name="bg_dark">#120B1A</color>
+    <color name="surface_dark">#1E1530</color>
+    <color name="surface_dark_elevated">#2A1F3F</color>
+    <color name="accent_purple">#8E4DFF</color>
+    <color name="text_on_dark">#FFFFFF</color>
+    <color name="text_on_dark_secondary">#B8AFC9</color>
+    <color name="divider_dark">#3A2E52</color>
+</resources>

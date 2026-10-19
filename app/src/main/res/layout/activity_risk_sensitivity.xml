@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/sensitivityTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Risk Sensitivity"
+        android:textColor="@color/text_on_dark"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sensitivitySubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Adjust how sensitive the risk engine is. This changes the fuzzy set boundaries used by FuzzyRiskEngine for every walk."
+        android:textColor="@color/text_on_dark_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sensitivityTitle" />
+
+    <RadioGroup
+        android:id="@+id/sensitivityGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sensitivitySubtitle">
+
+        <RadioButton
+            android:id="@+id/radioRelaxed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:background="@color/surface_dark"
+            android:button="@null"
+            android:padding="16dp"
+            android:text="Relaxed - Fewer check-ins"
+            android:textColor="@color/text_on_dark" />
+
+        <RadioButton
+            android:id="@+id/radioStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:background="@color/surface_dark"
+            android:button="@null"
+            android:padding="16dp"
+            android:text="Standard - Balanced (Recommended)"
+            android:textColor="@color/text_on_dark" />
+
+        <RadioButton
+            android:id="@+id/radioCautious"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/surface_dark"
+            android:button="@null"
+            android:padding="16dp"
+            android:text="Cautious - Earlier check-ins"
+            android:textColor="@color/text_on_dark" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/sensitivityLegend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Relaxed ←→ Standard ←→ Cautious"
+        android:textColor="@color/text_on_dark_secondary"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sensitivityGroup" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
