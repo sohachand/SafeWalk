@@ -70,6 +70,8 @@ public class HomeDashboardActivity extends AppCompatActivity {
         findViewById(R.id.historyLink).setOnClickListener(v ->
                 startActivity(new Intent(this, WalkHistoryActivity.class)));
         findViewById(R.id.nearbyHelpLink).setOnClickListener(v -> showNearbyHelp());
+        findViewById(R.id.riskLabLink).setOnClickListener(v ->
+                startActivity(new Intent(this, com.example.project.risk.RiskLabActivity.class)));
         TextView sirenLabel = findViewById(R.id.sirenLabel);
         findViewById(R.id.sirenLink).setOnClickListener(v -> {
             if (SirenStrobe.isRunning()) {

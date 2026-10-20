@@ -1,70 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/gradient_background">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="121dp"
-        android:layout_height="116dp"
-        android:layout_marginTop="104dp"
-        android:src="@drawable/app_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewSafe"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Safe"
-        android:textColor="@color/white"
-        android:textSize="34sp"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textViewWalk"
-        app:layout_constraintHorizontal_chainStyle="packed" />
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewWalk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Walk"
-        android:textColor="@color/pink"
-        android:textSize="34sp"
-        app:layout_constraintTop_toTopOf="@+id/textViewSafe"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewSafe"
-        app:layout_constraintStart_toEndOf="@+id/textViewSafe"
-        app:layout_constraintEnd_toEndOf="parent" />
-    <TextView
-        android:id="@+id/textViewSilent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Your Silent"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWalk" />
+        <FrameLayout
+            android:layout_width="280dp"
+            android:layout_height="280dp">
 
-    <TextView
-        android:id="@+id/textViewCompanion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Safety Companion"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSilent" />
+            <com.example.project.PulseView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_splash_logo"
+                android:clipToOutline="true"
+                android:contentDescription="SafeWalk logo"
+                android:padding="14dp"
+                android:src="@drawable/app_logo" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/wordmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Safe"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Walk"
+                android:textColor="@color/pink"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:letterSpacing="0.12"
+            android:text="YOUR SILENT SAFETY COMPANION"
+            android:textColor="#DDFFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="36dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/splashProgress"
+            android:layout_width="140dp"
+            android:layout_height="3dp"
+            android:max="100"
+            android:progressTint="#FFFFFF"
+            android:progressBackgroundTint="#44FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="Powered by fuzzy-logic risk detection"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp" />
+    </LinearLayout>
+</FrameLayout>

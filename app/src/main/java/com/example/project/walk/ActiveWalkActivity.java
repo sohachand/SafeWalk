@@ -119,6 +119,8 @@ public class ActiveWalkActivity extends AppCompatActivity implements LocationLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_walk);
+        // Keep the screen (and so GPS + risk monitoring) alive for the whole walk.
+        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         riskTierBanner = findViewById(R.id.riskTierBanner);
         riskTierText = findViewById(R.id.riskTierText);
@@ -249,6 +251,13 @@ public class ActiveWalkActivity extends AppCompatActivity implements LocationLis
 
     @SuppressLint("MissingPermission")
     private void beginTracking() {
+        // Ask (after the location prompt, so the two dialogs never collide) for SMS permission up front so an alert can be sent automatically later.
+        if (androidx.core.content.ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.SEND_SMS)
+                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            androidx.core.app.ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.SEND_SMS}, 9101);
+        }
         String provider = bestAvailableProvider();
         if (provider == null) {
             Toast.makeText(this, "No location provider available on this device", Toast.LENGTH_LONG).show();

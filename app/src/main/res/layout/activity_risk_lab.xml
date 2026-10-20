@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Risk Lab"
+            android:textColor="@color/text_on_dark"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Drag the sliders and watch the fuzzy engine think. Same engine that protects a real walk."
+            android:textColor="@color/text_on_dark_secondary" />
+
+        <com.example.project.home.ScoreRingView
+            android:id="@+id/labRing"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/labTier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="LOW"
+            android:textColor="@color/risk_low"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/labWhy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textColor="@color/text_on_dark_secondary"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/labStLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/text_on_dark" />
+        <SeekBar
+            android:id="@+id/labSt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="150" />
+
+        <TextView
+            android:id="@+id/labDevLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text_on_dark" />
+        <SeekBar
+            android:id="@+id/labDev"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="250" />
+
+        <TextView
+            android:id="@+id/labNightLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text_on_dark" />
+        <SeekBar
+            android:id="@+id/labNight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="24" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Fuzzy sets (white line = current value)"
+            android:textColor="@color/text_on_dark"
+            android:textStyle="bold" />
+
+        <com.example.project.risk.FuzzyCurvesView
+            android:id="@+id/curveSt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" />
+
+        <com.example.project.risk.FuzzyCurvesView
+            android:id="@+id/curveDev"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" />
+
+        <com.example.project.risk.FuzzyCurvesView
+            android:id="@+id/curveNight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Scenarios"
+            android:textColor="@color/text_on_dark"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/presetSafe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Safe stroll"
+                android:textSize="11sp" />
+            <Button
+                android:id="@+id/presetLost"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Lost &amp; late"
+                android:textSize="11sp" />
+            <Button
+                android:id="@+id/presetDanger"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="In danger"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Sensitivity"
+            android:textColor="@color/text_on_dark"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/sensRelaxed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Relaxed"
+                android:textSize="11sp" />
+            <Button
+                android:id="@+id/sensStandard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Standard"
+                android:textSize="11sp" />
+            <Button
+                android:id="@+id/sensCautious"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cautious"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

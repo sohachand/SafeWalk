@@ -1,6 +1,12 @@
 package com.example.project.safety;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.telephony.SmsManager;
+import androidx.core.content.ContextCompat;
+import java.util.ArrayList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -107,15 +113,40 @@ public class AlertSentActivity extends AppCompatActivity {
     }
 
     private void sendSms(List<TrustedContact> contacts, String liveCode) {
+        String body = "SafeWalk alert: I may be in an unsafe situation. Please check on me."
+                + (liveCode != null ? " Follow me live in SafeWalk > Follow a walk, code " + liveCode + "." : "")
+                + statusSuffix();
+
+        // Preferred: send automatically in the background, so help still gets called even if the
+        // user cannot touch the phone. Needs the SEND_SMS permission (requested when a walk starts).
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                == PackageManager.PERMISSION_GRANTED) {
+            try {
+                SmsManager sms = Build.VERSION.SDK_INT >= 31
+                        ? getSystemService(SmsManager.class) : SmsManager.getDefault();
+                ArrayList<String> parts = sms.divideMessage(body);
+                int sent = 0;
+                for (TrustedContact c : contacts) {
+                    if (c.phone == null || c.phone.trim().isEmpty()) continue;
+                    sms.sendMultipartTextMessage(c.phone.trim(), null, parts, null, null);
+                    sent++;
+                }
+                Toast.makeText(this, "Alert SMS sent automatically to " + sent + " contact(s)",
+                        Toast.LENGTH_LONG).show();
+                return;
+            } catch (Exception e) {
+                // fall through to the manual composer below
+            }
+        }
+
+        // Fallback: open the messaging app prefilled (user must press Send).
         StringBuilder numbers = new StringBuilder();
         for (TrustedContact c : contacts) {
             if (numbers.length() > 0) numbers.append(";");
             numbers.append(c.phone);
         }
         Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + numbers));
-        smsIntent.putExtra("sms_body", "SafeWalk alert: I may be in an unsafe situation. Please check on me."
-                + (liveCode != null ? " Follow me live in SafeWalk > Follow a walk, code " + liveCode + "." : "")
-                + statusSuffix());
+        smsIntent.putExtra("sms_body", body);
         if (smsIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(smsIntent);
         }
