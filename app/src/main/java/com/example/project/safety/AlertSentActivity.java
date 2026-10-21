@@ -50,8 +50,7 @@ public class AlertSentActivity extends AppCompatActivity {
         if (contacts.isEmpty()) {
             sb.append("✗ No trusted contacts saved yet");
         } else {
-            sb.append("✓ SMS alert sent to ").append(contacts.size()).append(" contact(s)");
-            sendSms(contacts, liveCode);
+            sb.append(sendSms(contacts, liveCode));
         }
         checklist.setText(sb.toString());
 
@@ -112,7 +111,7 @@ public class AlertSentActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private void sendSms(List<TrustedContact> contacts, String liveCode) {
+    private String sendSms(List<TrustedContact> contacts, String liveCode) {
         String body = "SafeWalk alert: I may be in an unsafe situation. Please check on me."
                 + (liveCode != null ? " Follow me live in SafeWalk > Follow a walk, code " + liveCode + "." : "")
                 + statusSuffix();
@@ -133,7 +132,7 @@ public class AlertSentActivity extends AppCompatActivity {
                 }
                 Toast.makeText(this, "Alert SMS sent automatically to " + sent + " contact(s)",
                         Toast.LENGTH_LONG).show();
-                return;
+                return "✓ SMS alert sent automatically to " + sent + " contact(s)";
             } catch (Exception e) {
                 // fall through to the manual composer below
             }
@@ -149,6 +148,9 @@ public class AlertSentActivity extends AppCompatActivity {
         smsIntent.putExtra("sms_body", body);
         if (smsIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(smsIntent);
+            return "! SMS permission missing - messaging app opened, press Send to alert "
+                    + contacts.size() + " contact(s)";
         }
+        return "✗ Could not send SMS (no SMS permission or messaging app)";
     }
 }

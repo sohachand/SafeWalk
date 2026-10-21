@@ -131,7 +131,9 @@ public class HomeDashboardActivity extends AppCompatActivity {
         int[] highByHour = new int[24];
         for (WalkRecord w : walks) {
             sumPeak += w.peakRisk;
-            totalMin += w.durationMinutes();
+            // Only finished walks count, and each is capped at 24h, so a walk that was never
+            // ended cannot add months of "minutes" to the total.
+            if (w.endTimeMillis > 0) totalMin += Math.min(w.durationMinutes(), 24 * 60);
             if ("HIGH".equals(w.finalTier)) {
                 high++;
                 java.util.Calendar c = java.util.Calendar.getInstance();

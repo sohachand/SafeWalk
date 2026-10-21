@@ -49,6 +49,11 @@ public class FollowWalkActivity extends AppCompatActivity {
 
         findViewById(R.id.followButton).setOnClickListener(v -> startFollowing());
         openMapsButton.setOnClickListener(v -> {
+            if (lat == 0.0 && lng == 0.0) {
+                Toast.makeText(this, "Location not available yet (no GPS fix on their phone)",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
             Intent i = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(String.format(Locale.US, "geo:%f,%f?q=%f,%f(SafeWalk)", lat, lng, lat, lng)));
             if (i.resolveActivity(getPackageManager()) != null) {

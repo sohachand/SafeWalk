@@ -388,9 +388,8 @@ public class ActiveWalkActivity extends AppCompatActivity implements LocationLis
     }
 
     private void computeAndShowRisk() {
-        if (lastLocation == null || startLocation == null) {
-            return;
-        }
+        // No GPS fix yet (e.g. indoors): keep scoring using time only (deviation 0), so the
+        // screen never sits on "Risk score: -". Location-based parts are skipped until a fix arrives.
         float stationaryMinutes = (System.currentTimeMillis() - lastMovementTimestamp) / 60000f * DEMO_TIME_MULTIPLIER;
 
         Calendar now = Calendar.getInstance();
@@ -405,8 +404,10 @@ public class ActiveWalkActivity extends AppCompatActivity implements LocationLis
         record.peakRisk = Math.max(record.peakRisk, risk);
         record.finalTier = tier.name();
         RiskPoint sample = new RiskPoint(System.currentTimeMillis(), risk);
-        sample.lat = lastLocation.getLatitude();
-        sample.lng = lastLocation.getLongitude();
+        if (lastLocation != null) {
+            sample.lat = lastLocation.getLatitude();
+            sample.lng = lastLocation.getLongitude();
+        }
         record.timeline.add(sample);
         walkHistoryStore.save(record);
 
@@ -415,9 +416,12 @@ public class ActiveWalkActivity extends AppCompatActivity implements LocationLis
                 stationaryMinutes, deviationMeters, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE)));
         explanationText.setText(explanation.summary);
         if (shareCode != null) {
+            // Publish even without a GPS fix (lat/lng 0,0) so followers still see the tier and
+            // score; the Follow screen tells them the location is not available yet.
+            double pubLat = lastLocation != null ? lastLocation.getLatitude() : 0.0;
+            double pubLng = lastLocation != null ? lastLocation.getLongitude() : 0.0;
             LiveShare.publish(this, shareCode, session.getName() == null || session.getName().isEmpty() ? "SafeWalk user" : session.getName(),
-                    lastLocation.getLatitude(), lastLocation.getLongitude(),
-                    risk, tier.name(), explanation.summary);
+                    pubLat, pubLng, risk, tier.name(), explanation.summary);
         }
 
         int colorRes;
