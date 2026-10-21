@@ -37,6 +37,17 @@
         app:layout_constraintTop_toBottomOf="@id/setupTitle" />
 
     <LinearLayout
+        android:id="@+id/suggestionList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_dark_elevated"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/destinationInput" />
+
+    <LinearLayout
         android:id="@+id/chipRow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,7 +55,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/destinationInput">
+        app:layout_constraintTop_toBottomOf="@id/suggestionList">
 
         <TextView
             android:id="@+id/chipHome"
@@ -89,7 +100,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="SafeWalk will track your live location and recompute your risk every 15 seconds once you start."
+        android:text="SafeWalk will track your live location and recompute your risk every few seconds once you start."
         android:textColor="@color/text_on_dark_secondary"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
