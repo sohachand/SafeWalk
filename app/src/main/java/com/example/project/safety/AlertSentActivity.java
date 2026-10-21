@@ -100,6 +100,8 @@ public class AlertSentActivity extends AppCompatActivity {
                 android.location.Location l = lm.getLastKnownLocation(p);
                 if (l != null && (best == null || l.getTime() > best.getTime())) best = l;
             }
+            String addr = com.example.project.cloud.PlaceApi.lastAddress;
+            if (addr != null && !addr.isEmpty()) sb.append(" Near: ").append(addr).append(".");
             if (best != null) {
                 sb.append(String.format(java.util.Locale.US,
                         " My location: https://maps.google.com/?q=%.5f,%.5f",

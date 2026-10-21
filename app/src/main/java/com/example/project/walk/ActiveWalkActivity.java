@@ -409,6 +409,10 @@ public class ActiveWalkActivity extends AppCompatActivity implements LocationLis
             sample.lng = lastLocation.getLongitude();
         }
         record.timeline.add(sample);
+        if (lastLocation != null) {
+            // Free reverse-geocoding call (at most once a minute) so an alert SMS can say where the user is.
+            com.example.project.cloud.PlaceApi.refreshAddress(lastLocation.getLatitude(), lastLocation.getLongitude());
+        }
         walkHistoryStore.save(record);
 
         riskScoreText.setText(String.format(Locale.getDefault(), "Risk score: %.1f", risk));

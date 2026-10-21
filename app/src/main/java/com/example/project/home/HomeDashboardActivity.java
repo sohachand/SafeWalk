@@ -96,18 +96,81 @@ public class HomeDashboardActivity extends AppCompatActivity {
         });
     }
 
-    /** Opens Google Maps (or the browser) searching for the chosen kind of place near the user. */
+    /**
+     * Finds the nearest police stations, hospitals, pharmacies or petrol pumps with the free
+     * OpenStreetMap Overpass API and lists them with distances. Falls back to a Google Maps
+     * search if there is no location fix or the web request fails.
+     */
     private void showNearbyHelp() {
         final String[] labels = {"Police station", "Hospital", "Pharmacy", "Petrol pump (open late)"};
         final String[] queries = {"police station", "hospital", "pharmacy", "petrol pump"};
+        final String[] osmTags = {"amenity=police", "amenity=hospital", "amenity=pharmacy", "amenity=fuel"};
         new AlertDialog.Builder(this)
                 .setTitle("Find nearby help")
-                .setItems(labels, (d, which) -> {
-                    Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query="
-                            + Uri.encode(queries[which] + " near me"));
-                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                })
+                .setItems(labels, (d, which) -> searchNearby(labels[which], queries[which], osmTags[which]))
                 .show();
+    }
+
+    private void openMapsSearch(String query) {
+        Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(query + " near me"));
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+    }
+
+    private void searchNearby(final String label, final String query, String osmTag) {
+        android.location.Location here = com.example.project.cloud.PlaceApi.lastKnown(this);
+        if (here == null) {
+            android.widget.Toast.makeText(this, "No location fix yet - opening Maps instead",
+                    android.widget.Toast.LENGTH_SHORT).show();
+            openMapsSearch(query);
+            return;
+        }
+        final android.widget.Toast wait = android.widget.Toast.makeText(this,
+                "Searching for nearby " + label.toLowerCase(Locale.getDefault()) + "...",
+                android.widget.Toast.LENGTH_SHORT);
+        wait.show();
+        com.example.project.cloud.PlaceApi.findNearby(osmTag, here.getLatitude(), here.getLongitude(),
+                new com.example.project.cloud.PlaceApi.NearbyListener() {
+                    @Override
+                    public void onResult(List<com.example.project.cloud.PlaceApi.Place> places) {
+                        if (isFinishing()) return;
+                        if (places.isEmpty()) {
+                            android.widget.Toast.makeText(HomeDashboardActivity.this,
+                                    "Nothing found within 3 km - opening Maps instead",
+                                    android.widget.Toast.LENGTH_SHORT).show();
+                            openMapsSearch(query);
+                            return;
+                        }
+                        final String[] rows = new String[places.size()];
+                        for (int i = 0; i < rows.length; i++) {
+                            com.example.project.cloud.PlaceApi.Place p = places.get(i);
+                            String name = p.name == null || p.name.isEmpty() ? label : p.name;
+                            String dist = p.distanceM < 1000
+                                    ? String.format(Locale.getDefault(), "%.0f m", p.distanceM)
+                                    : String.format(Locale.getDefault(), "%.1f km", p.distanceM / 1000f);
+                            rows[i] = name + "  \u2022  " + dist;
+                        }
+                        new AlertDialog.Builder(HomeDashboardActivity.this)
+                                .setTitle("Nearest " + label.toLowerCase(Locale.getDefault()))
+                                .setItems(rows, (dlg, idx) -> {
+                                    com.example.project.cloud.PlaceApi.Place p = places.get(idx);
+                                    Uri uri = Uri.parse(String.format(Locale.US,
+                                            "https://www.google.com/maps/dir/?api=1&destination=%f,%f&travelmode=walking",
+                                            p.lat, p.lng));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                                })
+                                .setNegativeButton("Close", null)
+                                .show();
+                    }
+
+                    @Override
+                    public void onError() {
+                        if (isFinishing()) return;
+                        android.widget.Toast.makeText(HomeDashboardActivity.this,
+                                "Could not reach the places service - opening Maps instead",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        openMapsSearch(query);
+                    }
+                });
     }
 
     @Override
